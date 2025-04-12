@@ -1,3 +1,6 @@
 venv
 .idea
 background_images
+src/pdf_images
+images
+output_images

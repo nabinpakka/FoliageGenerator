@@ -6,22 +6,26 @@ from functools import lru_cache
 from PIL import Image
 from typing import Dict
 
-from utilities import Utility
 from src.model.single_plant import SinglePlant
-class TrifoliatePatch:
-    def __init__(self):
+from src.utilities import Utility
 
-        self.PLANT_PER_PATCH = 12
-        self.BASE_IMAGE_SIZE = (1024, 1500)
-        self.SINGLE_IMAGE_SIZE = (600, 600)
+
+# TODO parse config file
+
+class Foliage:
+    def __init__(self, config):
+
+        self.PLANT_PER_PATCH = config.get("num_plants")
+        self.BASE_IMAGE_SIZE = eval(config.get("foliage_size"))
+        self.SINGLE_IMAGE_SIZE = config.get("single_plant_size")
         self.OFFSET = 100
+        self.config = config
+        self.BASE_BACKGROUND_IMAGE = config.get("background_image_path")
         self._setup()
 
     def _setup(self):
-        self.BASE_BACKGROUND_IMAGE = "/home/nabin/Documents/DiseaseClassification/src/background_images/cropped_images"
-
         self._image_cache: Dict[str, Image.Image] = {}
-        self.single_plant = SinglePlant()
+        self.single_plant = SinglePlant(self.config)
         self.utility = Utility()
         self.background_paths = self.__get_list_of_background_images()
     def __get_list_of_background_images(self):
@@ -53,24 +57,24 @@ class TrifoliatePatch:
             coords.append((x_coord + 2 * (self.SINGLE_IMAGE_SIZE[0] - (self.OFFSET * 2)), y - self.OFFSET))
         return coords
 
-    def get_patch_of_trifoliate(self, disease="healthy") -> Image:
+    def get_patch_of_leaves(self, disease="healthy") -> Image:
 
-        angles = self.utility.get_random_angle(self.PLANT_PER_PATCH)
+        # angles = self.utility.get_random_angle(self.PLANT_PER_PATCH)
         coords = self._get_coordinates_for_single_plant()
 
         background_image = self._load_and_prepare_image(random.choice(self.background_paths))
         background_image = background_image.resize(self.BASE_IMAGE_SIZE)
 
-        for (coord, angle) in zip(coords, angles):
+        for coord in coords:
             single_plant = self.single_plant.get_single_plant(disease)
             # single_plant = single_plant.rotate(angle)
             background_image.paste(single_plant, coord, single_plant)
         return background_image
 
 if __name__ == '__main__':
-    trifoliate_patch = TrifoliatePatch()
+    trifoliate_patch = Foliage()
 
     start_time = time.time()
-    trifoliate_patch.get_patch_of_trifoliate("healthy")
+    trifoliate_patch.get_patch_of_leaves("healthy")
     end_time = time.time()
     print("Total time taken: ", end_time - start_time)

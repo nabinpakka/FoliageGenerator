@@ -1,7 +1,4 @@
 from PIL import Image
-import os
-
-from trifoliate import Trifoliate
 
 image_dir = "/Users/hubbleloo/Documents/ResearchAssistant/Disease Classification/soyabean/DiseaseClassification/src/images/bacterial_blight"
 

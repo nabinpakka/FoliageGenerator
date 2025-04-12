@@ -1,50 +1,64 @@
 import os
 from concurrent.futures import ThreadPoolExecutor
 import time
+import argparse
+from argparse import Namespace
 
 from PIL import Image
 
-from trifoliate_patch import TrifoliatePatch
+from src.model.foliage import Foliage
+from src.utilities import Utility
 
-BASE_OUTPUT_PATH = "/home/nabin/Documents/DiseaseClassification/src/output_images/new_image95"
 
-
-patch = TrifoliatePatch()
-def create_patch_images_for_disease(disease="frogeye", thread_num = 2):
-
+def create_patch_images_for_disease(base_output_path, disease="frogeye", thread_num=2):
     num_patch_images_per_disease = 200
     for i in range(0, num_patch_images_per_disease):
-        patch_image: Image = patch.get_patch_of_trifoliate(disease)
+        patch_image: Image = foliage.get_patch_of_leaves(config, disease)
 
-        disease_dir = os.path.join(BASE_OUTPUT_PATH , disease)
+        disease_dir = os.path.join(base_output_path, disease)
 
-        output_path = disease_dir +"/"+ str(thread_num) + "_" + str(i) +".png"
+        output_path = disease_dir + "/" + str(thread_num) + "_" + str(i) + ".png"
         print("Saved image at: ", output_path)
         patch_image.save(output_path)
 
-def create_dir_if_not_exist(disease_list):
+
+def create_dir_if_not_exist(path, disease_list):
     for disease in disease_list:
-        disease_dir = os.path.join(BASE_OUTPUT_PATH , disease)
+        disease_dir = os.path.join(path, disease)
         os.makedirs(disease_dir, exist_ok=True)
-            
+
+
+#
+
+
+def parse_arguments() -> Namespace:
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--input', '-i', required=True, help="Single leaf image folder path")
+    parser.add_argument('--output', '-o', required=True, help="Output path for the generated foliar image")
+    parser.add_argument('--config', '-c', required=True, help="Plant specific configuration file. A json file")
+    parser.add_argument('--type', '-t', required=True, help="Type of plant (e.g. soybean)")
+
+    return parser.parse_args()
+
 
 if __name__ == '__main__':
-
     start_time = time.time()
-    # diseases = ["frogeye", "bacterial_blight", "rust", "cercospora_leaf_blight", "downey_mildew", "mosiac_virus", "potassium_deficiency", "sudden_death_syndrom", "target_spot", "healthy"]
+    utility = Utility()
+    args = parse_arguments()
 
-    diseases = [ "mosiac_virus", "potassium_deficiency", "sudden_death_syndrom", "target_spot", "healthy","mosiac_virus", "potassium_deficiency", "sudden_death_syndrom", "target_spot", "healthy","mosiac_virus", "potassium_deficiency", "sudden_death_syndrom", "target_spot", "healthy" ]
+    config = utility.json_parser(args.config)
+    diseases = utility.string_to_list(config.get("diseases"))
 
-    create_dir_if_not_exist(diseases)
-    # disease = "potassium_deficiency"
-    # multi threading
-    # create_patch_images_for_disease(disease, 12)
+    base_output_path = args.output
 
+    foliage = Foliage(config)
+
+    create_dir_if_not_exist(base_output_path, diseases)
     with ThreadPoolExecutor(max_workers=20) as executor:
-        futures = [executor.submit(create_patch_images_for_disease, disease, idx) for idx, disease in enumerate(diseases)]
+        futures = [executor.submit(create_patch_images_for_disease, base_output_path, disease, idx) for idx, disease in enumerate(diseases)]
 
     end_time = time.time()
     elapsed_time = end_time - start_time
     print(f"Total elapsed time: {elapsed_time: 0.2f}")
 
- 
