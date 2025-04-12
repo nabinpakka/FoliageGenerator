@@ -1,6 +1,7 @@
+import json
 import math
 import random
-from typing import Tuple
+from typing import Tuple, Dict, List
 
 import numpy as np
 
@@ -99,3 +100,11 @@ class Utility:
             coordinates.append((round(x), round(y)))
 
         return coordinates
+
+    def json_parser(self, file_path) -> Dict:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        return data
+
+    def string_to_list(self, input, separator = ',') -> List:
+        return input.split(separator)

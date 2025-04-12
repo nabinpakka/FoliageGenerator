@@ -1,30 +1,28 @@
 import math
 
-from PIL import Image, ImageDraw
-from typing import Tuple
+from PIL import Image
 import random
 import time
 
-from utilities import Utility
-from trifoliate import Trifoliate
+from src.soybean.trifoliate import Trifoliate
+from src.utilities import Utility
 
 
 class SinglePlant:
-    def __init__(self):
-        self.TRIFOLIATE_RANGE = (30, 40)
-        self.PLANT_IMAGE_SIZE = (512, 512)  # y-axis height of plant in the image
+    def __init__(self, config):
+
+        num_leaves = config.get("num_leaves")
+        self.LEAF_RANGE = (num_leaves - 5, num_leaves + 5)
+        self.PLANT_IMAGE_SIZE = (config.get("single_plant_size"), config.get("single_plant_size"))  # y-axis height of plant in the image
         self.PLANT_IMAGE_RADIUS = 30
         self.CENTER_OFFSET = 100
+        self.DISEASE_PERCENT = config.get("disease_rate")
+        # self.leaf = leaf
         self._setup()
 
     def _setup(self):
         self.utility = Utility()
-        self.trifoliate = Trifoliate()
-
-    def _draw_branch(self, canvas, branch_coord, trifoliate_coord):
-        draw = ImageDraw.Draw(canvas)
-
-        draw.line([branch_coord, trifoliate_coord], fill='green', width=8)
+        self.trifoliate = Trifoliate("dd")
 
 
     def get_angle_of_rotation_for_coords(self, center, coords):
@@ -50,7 +48,7 @@ class SinglePlant:
         return angles
 
     def get_single_plant(self, disease="frogeye"):
-        num_trifoliates = random.randint(self.TRIFOLIATE_RANGE[0], self.TRIFOLIATE_RANGE[1])
+        num_trifoliates = random.randint(self.LEAF_RANGE[0], self.LEAF_RANGE[1])
 
         # background transparent image
         background = Image.new("RGBA", self.PLANT_IMAGE_SIZE, (0, 0, 0, 0))
@@ -64,24 +62,19 @@ class SinglePlant:
         angles = self.get_angle_of_rotation_for_coords(center, coords)
 
         # percentage of healthy trifoliate as most of the leaves will be healthy
-        rand_healthy_trifoliate_percent =95
+        rand_healthy_trifoliate_percent = 100 - self.DISEASE_PERCENT
         healthy_trifoliate_count = math.ceil(num_trifoliates * rand_healthy_trifoliate_percent / 100)
 
         # trifoliate to cover the gap in the center of the single plant
-        center_trifoliate = self.trifoliate.get_trifoliate(disease, angles[0])
+        center_trifoliate = self.trifoliate.get_leaves(disease, angles[0])
         background.paste(center_trifoliate, center, center_trifoliate)
-
-        # # first layer
-        # # There is a bifoliate in the first layer
-        # bifoliate = self.trifoliate.get_bifoliate(coordinates=center, angle=bifoliate_angle[0])
-        # background.paste(bifoliate, center, bifoliate)
 
         num_trifoliates_to_scale = 5
         scale_factor = 0.5
         scale_offset = 0.05
 
         # Second layer
-        # Second layer contins trifoliates on the main stem only
+        # Second layer contains trifoliates on the main stem only
         # The number of trifoliates vary from 2-4
         # num_trifoliates_no_branch = random.randint(2,4)
         for idx, (coord, angle) in enumerate(zip(coords, angles)):
@@ -90,10 +83,10 @@ class SinglePlant:
                 healthy_trifoliate_count -= 1
             if num_trifoliates_to_scale > 0:
                 scale_factor = scale_factor + scale_offset * idx
-                trifoliate = self.trifoliate.get_trifoliate(disease_type, angle, scale_factor)
+                trifoliate = self.trifoliate.get_leaves(disease_type, angle, scale_factor)
                 num_trifoliates_to_scale -= 1
             else:
-                trifoliate = self.trifoliate.get_trifoliate(disease_type, angle)
+                trifoliate = self.trifoliate.get_leaves(disease_type, angle)
             background.paste(trifoliate, coord, trifoliate)
             # self._draw_branch(background, stem_coords, coord)
         return background

@@ -1,22 +1,21 @@
-import time
 from functools import lru_cache
 from typing import Dict, Tuple, List
 
-from utilities import Utility
-
 from PIL import Image
-
-import json
 
 import os
 import math
 import random
 
+from src.utilities import Utility
+from src.model.composite_leaf import CompositeLeaf
 
-class Trifoliate:
-    def __init__(self):
 
-        self.BASE_LEAF_IMAGE_PATH = "/home/nabin/Documents/DiseaseClassification/src/images"
+class Trifoliate(CompositeLeaf):
+    def __init__(self, base_leaf_image_path):
+
+        self.BASE_LEAF_IMAGE_PATH = base_leaf_image_path #"/home/nabin/Documents/DiseaseClassification/src/images"
+
         self.LEAF_IMAGE_SIZE = (100, 100)
         self.TRIFOLIATE_SPACING = 100
 
@@ -65,12 +64,6 @@ class Trifoliate:
                                                                                        dir_name)
             self.image_path_by_disease[dir_name] = image_paths
             self.images_count[dir_name] = image_count
-
-        # # saving them to a file
-        # with open("image_list_by_disease.json", "w") as file:
-        #     json.dump(self.image_path_by_disease, file)
-        # with open("image_count_by_disease.json", "w") as file:
-        #     json.dump(self.images_count, file)
 
     def __get_random_leaf_image_path_from_dir(self, disease):
         num_images = self.images_count[disease]
@@ -156,27 +149,3 @@ class Trifoliate:
         background = background.rotate(angle)
 
         return background
-
-# if __name__ == '__main__':
-#     start_time = time.time()
-#     trifoliate = Trifoliate()
-#
-#     frogeye = trifoliate.get_patch_of_trifoliate("downey_mildew")
-#     frogeye.show()
-#     end_time = time.time()
-#     total_time = end_time - start_time
-#     print(f"Time to load the Trifoliate object: {total_time: 0.6f}")
-
-# #
-# target_spot = trifoliate.get_patch_of_trifoliate("target_spot")
-# target_spot.show()
-# target_spot_time = time.time() - frogeye_time
-# print(f"Time to load the Trifoliate object: {target_spot_time: 0.6f}")
-#
-# rust = trifoliate.get_patch_of_trifoliate("rust")
-# rust.show()
-# rust_time = time.time() - target_spot_time
-# print(f"Time to load the Trifoliate object: {rust_time: 0.6f}")
-#
-# potassium_deficiency = trifoliate.get_patch_of_trifoliate("potassium_deficiency")
-# potassium_deficiency.show()

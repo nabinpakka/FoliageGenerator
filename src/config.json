@@ -1,0 +1,10 @@
+{
+  "num_leaves": 35,
+  "diseases": "frogeye, bacterial_blight, rust, cercospora_leaf_blight, downey_mildew, mosiac_virus, potassium_deficiency, sudden_death_syndrom, target_spot, healthy",
+  "foliage_size": "(1024, 1500)",
+  "single_plant_size": 512,
+  "num_plants": 12,
+  "disease_rate": 5,
+  "background_image_path": "/home/nabin/Documents/DiseaseClassification/src/background_images/cropped_image"
+}
+
