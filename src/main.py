@@ -13,7 +13,7 @@ from src.utilities import Utility
 def create_patch_images_for_disease(base_output_path, disease="frogeye", thread_num=2):
     num_patch_images_per_disease = 200
     for i in range(0, num_patch_images_per_disease):
-        patch_image: Image = foliage.get_patch_of_leaves(config, disease)
+        patch_image: Image = foliage.get_patch_of_leaves(disease)
 
         disease_dir = os.path.join(base_output_path, disease)
 
@@ -27,18 +27,10 @@ def create_dir_if_not_exist(path, disease_list):
         disease_dir = os.path.join(path, disease)
         os.makedirs(disease_dir, exist_ok=True)
 
-
-#
-
-
 def parse_arguments() -> Namespace:
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--input', '-i', required=True, help="Single leaf image folder path")
-    parser.add_argument('--output', '-o', required=True, help="Output path for the generated foliar image")
     parser.add_argument('--config', '-c', required=True, help="Plant specific configuration file. A json file")
-    parser.add_argument('--type', '-t', required=True, help="Type of plant (e.g. soybean)")
-
     return parser.parse_args()
 
 
@@ -50,7 +42,7 @@ if __name__ == '__main__':
     config = utility.json_parser(args.config)
     diseases = utility.string_to_list(config.get("diseases"))
 
-    base_output_path = args.output
+    base_output_path = config.get("output_path")
 
     foliage = Foliage(config)
 

@@ -47,14 +47,14 @@ class Foliage:
         return self._image_cache[image_path].copy()
 
     def _get_coordinates_for_single_plant(self):
-        x_coord = self.BASE_IMAGE_SIZE[0] // 3 - self.SINGLE_IMAGE_SIZE[0] // 2 - self.OFFSET
-        y_coord_step = self.SINGLE_IMAGE_SIZE[1] - (self.OFFSET * 2)
+        x_coord = self.BASE_IMAGE_SIZE[0] // 3 - self.SINGLE_IMAGE_SIZE // 2 - self.OFFSET
+        y_coord_step = self.SINGLE_IMAGE_SIZE - (self.OFFSET * 2)
 
         coords = []
         for y in range(0, self.BASE_IMAGE_SIZE[1], y_coord_step):
             coords.append((x_coord, y))
-            coords.append((x_coord + (self.SINGLE_IMAGE_SIZE[0] - (self.OFFSET * 2)), y - self.OFFSET))
-            coords.append((x_coord + 2 * (self.SINGLE_IMAGE_SIZE[0] - (self.OFFSET * 2)), y - self.OFFSET))
+            coords.append((x_coord + (self.SINGLE_IMAGE_SIZE - (self.OFFSET * 2)), y - self.OFFSET))
+            coords.append((x_coord + 2 * (self.SINGLE_IMAGE_SIZE - (self.OFFSET * 2)), y - self.OFFSET))
         return coords
 
     def get_patch_of_leaves(self, disease="healthy") -> Image:
@@ -72,9 +72,13 @@ class Foliage:
         return background_image
 
 if __name__ == '__main__':
-    trifoliate_patch = Foliage()
+
+    utility = Utility()
+    config =  utility.json_parser("/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/config.json")
+    trifoliate_patch = Foliage(config)
 
     start_time = time.time()
-    trifoliate_patch.get_patch_of_leaves("healthy")
+    patch = trifoliate_patch.get_patch_of_leaves("healthy")
+    patch.show()
     end_time = time.time()
     print("Total time taken: ", end_time - start_time)
