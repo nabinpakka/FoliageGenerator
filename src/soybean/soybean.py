@@ -2,14 +2,14 @@ import numpy as np
 
 import math
 
+from src.model.composite_leaf import CompositeLeaf
 from src.model.plant import Plant
-from src.soybean.soybean_trifoliate import Trifoliate
 
 
 class Soybean(Plant):
     def __init__(self, config):
         self.config = config
-        self.trifoliate = Trifoliate(config.get("input_path"))
+        self.trifoliate = CompositeLeaf(config)
         pass
 
     def get_leaf_arrangement_coords(self, center, num_leaves=25):

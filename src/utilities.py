@@ -23,14 +23,6 @@ class Utility:
             angles.append(angle)
             radii.append(radius)
 
-        #
-        # for n in range (num_trifoliates//2 +1, num_trifoliates):
-        #     angle = 90 + n * golden_angle # rotate the angle by 90
-        #     radius = scaling_factor * np.sqrt(n)
-        #
-        #     angles.append(angle)
-        #     radii.append(radius)
-
         
         # Convert to Cartesian coordinates
         xs =  [center[0] + r * np.cos(theta) for r, theta in zip(radii, angles)]
@@ -107,4 +99,4 @@ class Utility:
         return data
 
     def string_to_list(self, input, separator = ',') -> List:
-        return input.split(separator)
+        return [part.strip() for part in input.split(separator)]

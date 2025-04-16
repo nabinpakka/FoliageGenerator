@@ -1,0 +1,14 @@
+{
+  "num_leaves": 35,
+  "diseases": "frogeye, bacterial_blight, rust, cercospora_leaf_blight, downey_mildew, mosiac_virus, potassium_deficiency, sudden_death_syndrom, target_spot, healthy",
+  "foliage_size": "(1024, 1500)",
+  "single_plant_size": 512,
+  "num_plants": 12,
+  "disease_rate": 5,
+  "background_image_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/cropped_images",
+  "input_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/images/soybean",
+  "output_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/output_images/soybean",
+  "type": "soybean",
+  "leaf_spacing": 100
+}
+
