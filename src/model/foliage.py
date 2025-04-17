@@ -18,7 +18,8 @@ class Foliage:
         self.PLANT_PER_PATCH = config.get("num_plants")
         self.BASE_IMAGE_SIZE = eval(config.get("foliage_size"))
         self.SINGLE_IMAGE_SIZE = config.get("single_plant_size")
-        self.OFFSET = 100
+        self.OFFSET = config.get("plant_offset")
+        self.TYPE = config.get("type")
         self.config = config
         self.BASE_BACKGROUND_IMAGE = config.get("background_image_path")
         self._setup()
@@ -47,14 +48,19 @@ class Foliage:
         return self._image_cache[image_path].copy()
 
     def _get_coordinates_for_single_plant(self):
+
+        column_gap = 2
+        if self.TYPE == "tomato":
+            column_gap = 1.5
+
         x_coord = self.BASE_IMAGE_SIZE[0] // 3 - self.SINGLE_IMAGE_SIZE // 2 - self.OFFSET
         y_coord_step = self.SINGLE_IMAGE_SIZE - (self.OFFSET * 2)
 
         coords = []
         for y in range(0, self.BASE_IMAGE_SIZE[1], y_coord_step):
             coords.append((x_coord, y))
-            coords.append((x_coord + (self.SINGLE_IMAGE_SIZE - (self.OFFSET * 2)), y - self.OFFSET))
-            coords.append((x_coord + 2 * (self.SINGLE_IMAGE_SIZE - (self.OFFSET * 2)), y - self.OFFSET))
+            coords.append((x_coord + (self.SINGLE_IMAGE_SIZE - int(self.OFFSET * column_gap)), y - self.OFFSET))
+            coords.append((x_coord + 2 * (self.SINGLE_IMAGE_SIZE - int(self.OFFSET * column_gap)), y - self.OFFSET))
         return coords
 
     def get_patch_of_leaves(self, disease="healthy") -> Image:
@@ -74,11 +80,11 @@ class Foliage:
 if __name__ == '__main__':
 
     utility = Utility()
-    config =  utility.json_parser("/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/config.json")
+    config =  utility.json_parser("/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/soybean/config.json")
     trifoliate_patch = Foliage(config)
 
     start_time = time.time()
-    patch = trifoliate_patch.get_patch_of_leaves("healthy")
+    patch = trifoliate_patch.get_patch_of_leaves("frogeye")
     patch.show()
     end_time = time.time()
     print("Total time taken: ", end_time - start_time)

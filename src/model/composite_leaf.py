@@ -17,7 +17,7 @@ class CompositeLeaf():
 
         self.PLANT_PER_PATCH = config.get("num_plants")
         self.BASE_IMAGE_SIZE = config.get("foliage_size")
-        self.LEAF_IMAGE_SIZE = config.get("single_plant_size")
+        self.LEAF_IMAGE_SIZE = config.get("single_leaf_size")
         self.BASE_BACKGROUND_IMAGE = config.get("background_image_path")
         self.BASE_LEAF_IMAGE_PATH = config.get("input_path")
         self.LEAF_SPACING = config.get("leaf_spacing")
@@ -69,49 +69,58 @@ class CompositeLeaf():
         # get random image from the directory
         return random_image_path
 
-    def _get_leaves_image_paths_for_trifoliate(self, disease="frogeye"):
+    def _get_leaves_image_paths(self, disease="healthy", num_leaves = 3):
         # generate random number for the number of healthy leaves to include in the trifoliate
-        num_healthy_leaves = 3 if disease == "healthy" else random.randint(0, 2)
+        num_healthy_leaves = num_leaves if disease == "healthy" else random.randint(0, 2)
 
         leaf_image_paths = []
         leaf_image_paths.extend(random.sample(self.image_path_by_disease["healthy"], num_healthy_leaves))
         if disease != "healthy":
-            leaf_image_paths.extend(random.sample(self.image_path_by_disease[disease], 3 - num_healthy_leaves))
+            leaf_image_paths.extend(random.sample(self.image_path_by_disease[disease], num_leaves - num_healthy_leaves))
 
         return leaf_image_paths
 
-    def get_bifoliate(self, disease="healthy", coordinates=(0, 0), angle=0) -> Image.Image:
-        leaf_image_paths = self._get_leaves_image_paths_for_trifoliate(disease)
+    def get_bifoliate(self, disease="healthy", angle=0, scale_factor=1) -> Image.Image:
+        leaf_image_paths = self._get_leaves_image_paths(disease, 2)
 
-        size_of_bifoliate_image = self.LEAF_IMAGE_SIZE[0] * 2
+        size_of_bifoliate_image = self.LEAF_IMAGE_SIZE * 2
+        scaled_size = self.LEAF_IMAGE_SIZE * scale_factor
 
         leaf_image = Image.open(leaf_image_paths[0]).convert("RGBA")
         leaf_image1 = Image.open(leaf_image_paths[1]).convert("RGBA")
 
         background = Image.new("RGBA", (size_of_bifoliate_image, size_of_bifoliate_image), (0, 0, 0, 0))
 
-        rotated_image1 = leaf_image1.rotate(180)
+        leaf_image = leaf_image.resize(
+            (int(scaled_size), int(scaled_size)),
+            Image.Resampling.LANCZOS)
+        leaf_image1 = leaf_image1.resize(
+            (int(scaled_size), int(scaled_size)),
+            Image.Resampling.LANCZOS)
+
+        rotated_image = leaf_image.rotate(-90)
+        rotated_image1 = leaf_image1.rotate(90)
 
         half = size_of_bifoliate_image // 2
         x_offset = half
         y_offset = half
         x_offset1 = half - self.LEAF_SPACING
-        y_offset1 = half - self.LEAF_SPACING
+        y_offset1 = half
 
-        background.paste(leaf_image, (x_offset, y_offset), leaf_image)
+        background.paste(rotated_image, (x_offset, y_offset), leaf_image)
         background.paste(rotated_image1, (x_offset1, y_offset1), rotated_image1)
         background = background.rotate(angle)
         return background
 
-    def get_trifoliate(self, disease="healthy", angle=0, size_factor=1) -> Image.Image:
+    def get_trifoliate(self, disease="healthy", angle=0, scale_factor=1) -> Image.Image:
         # leaf_image_dir = os.path.join(BASE_LEAF_IMAGE_PATH, disease)
-        leaf_image_paths = self._get_leaves_image_paths_for_trifoliate(disease)
+        leaf_image_paths = self._get_leaves_image_paths(disease)
 
         size_of_trifoliate_image = self.LEAF_IMAGE_SIZE * 2
-
         leaf_image = Image.open(leaf_image_paths[0]).convert("RGBA")
         leaf_image1 = Image.open(leaf_image_paths[1]).convert("RGBA")
         leaf_image2 = Image.open(leaf_image_paths[2]).convert("RGBA")
+
 
         background = Image.new("RGBA", (size_of_trifoliate_image, size_of_trifoliate_image), (0, 0, 0, 0))
 
@@ -126,7 +135,7 @@ class CompositeLeaf():
         x_offset2 = half - math.ceil(1.5 * self.LEAF_SPACING)
         y_offset2 = half
 
-        scaled_size = self.LEAF_IMAGE_SIZE * size_factor
+        scaled_size = self.LEAF_IMAGE_SIZE * scale_factor
 
         leaf_image = leaf_image.resize(
             (int(scaled_size), int(scaled_size)),
