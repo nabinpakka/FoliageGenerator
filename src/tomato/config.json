@@ -1,15 +1,16 @@
 {
-  "num_leaves": 35,
+  "num_leaves": 30,
   "diseases": "early_blight, bacterial_spot, late_blight, leaf_curl_virus, leaf_mold, mosaic_virus, septoria_leaf_spot, two_spotted_spider_mite, target_spot, healthy",
   "foliage_size": "(1024, 1500)",
   "single_plant_size": 512,
+  "single_leaf_size":70,
   "num_plants": 12,
+  "plant_offset": 100,
   "disease_rate": 10,
-  "background_image_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/cropped_images",
+  "background_image_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/tomato/cropped_images",
   "input_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/images/tomato",
   "output_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/output_images/tomato",
-  "type": "soybean",
-  "leaf_spacing": 40
-
+  "type": "tomato",
+  "leaf_spacing": 50
 }
 

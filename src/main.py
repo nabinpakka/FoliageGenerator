@@ -11,15 +11,15 @@ from src.utilities import Utility
 
 
 def create_patch_images_for_disease(output_path, disease="frogeye", thread_num=2):
-    num_patch_images_per_disease = 200
+    num_patch_images_per_disease = 5
     for i in range(0, num_patch_images_per_disease):
         patch_image: Image = foliage.get_patch_of_leaves(disease)
 
         disease_dir = os.path.join(output_path, disease)
 
-        output_path = disease_dir + "/" + str(thread_num) + "_" + str(i) + ".png"
-        print("Saved image at: ", output_path)
-        patch_image.save(output_path)
+        output_image_path = disease_dir + "/" + str(thread_num) + "_" + str(i) + ".png"
+        print("Saved image at: ", output_image_path)
+        patch_image.save(output_image_path)
 
 
 def create_dir_if_not_exist(path, disease_list):

@@ -33,7 +33,7 @@ class SinglePlant:
         elif self.plant_type.lower() == "tomato":
             self.plant = Tomato(config)
 
-    def get_single_plant(self, disease="frogeye"):
+    def get_single_plant(self, disease="healthy"):
         num_leaves = random.randint(self.LEAF_RANGE[0], self.LEAF_RANGE[1])
 
         # background transparent image
@@ -49,7 +49,7 @@ class SinglePlant:
         rand_healthy_leaves_percent = 100 - self.DISEASE_PERCENT
         healthy_leaves_count = math.ceil(num_leaves * rand_healthy_leaves_percent / 100)
 
-        # trifoliate to cover the gap in the center of the single plant
+        # leaf to cover the gap in the center of the single plant
         central_leaf = self.plant.get_leaves(disease, angles[0])
         background.paste(central_leaf, center, central_leaf)
 
@@ -75,8 +75,8 @@ class SinglePlant:
 if __name__ == '__main__':
     utility = Utility()
     config = utility.json_parser(
-        "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/config.json")
-    single_plant = SinglePlant( config)
+        "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/soybean/config.json")
+    single_plant = SinglePlant(config)
 
     start_time = time.time()
     single_plant.get_single_plant().show()

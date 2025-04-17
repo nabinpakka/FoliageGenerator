@@ -4,12 +4,14 @@ from abc import ABC
 import numpy as np
 import random
 
+from src.model.composite_leaf import CompositeLeaf
 from src.model.plant import Plant
 
 
-class Tomato(Plant, ABC):
+class Tomato(Plant):
     def __init__(self, config):
         self.config = config
+        self.bifoliate = CompositeLeaf(config)
         self.__setup__()
 
     def __setup__(self):
@@ -20,6 +22,7 @@ class Tomato(Plant, ABC):
     def get_leaf_arrangement_coords(self, center, num_leaves=25):
         # take randon angle
         divergence_angle = random.choice(self.patterns)
+        scaling_factor = 40
         # Convert angle to radians
         angle_rad = np.radians(divergence_angle)
 
@@ -31,7 +34,8 @@ class Tomato(Plant, ABC):
             theta = i * angle_rad
 
             # Calculate radius (using concentric circles approach)
-            r = np.sqrt(i / (2 * np.pi))
+            # r = scaling_factor * np.sqrt(i / (2 * np.pi))
+            r = scaling_factor * np.sqrt(i )
 
             # Convert polar coordinates to Cartesian
             x_i = r * np.cos(theta) + center[0]
@@ -43,7 +47,8 @@ class Tomato(Plant, ABC):
             leaf_size = self.BASE_LEAF_SIZE + distance * self.LEAF_SCALE_FACTOR
             sizes.append(leaf_size)
 
-            coords.append((x_i, y_i))
+            coords.append((int(x_i), int(y_i)))
+        return coords
 
     def get_angle_of_rotation_for_coords(self, center, coords):
         angles = []
@@ -68,4 +73,4 @@ class Tomato(Plant, ABC):
         return angles
 
     def get_leaves(self, disease_type, angle, scale_factor=1):
-        pass
+        return self.bifoliate.get_bifoliate(disease_type, angle, scale_factor )
