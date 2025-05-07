@@ -80,11 +80,11 @@ class Foliage:
 if __name__ == '__main__':
 
     utility = Utility()
-    config =  utility.json_parser("/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/soybean/config.json")
+    config =  utility.json_parser("/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/tomato/config.json")
     trifoliate_patch = Foliage(config)
 
     start_time = time.time()
-    patch = trifoliate_patch.get_patch_of_leaves("bacterial_blight")
+    patch = trifoliate_patch.get_patch_of_leaves("bacterial_spot")
     patch.show()
     end_time = time.time()
     print("Total time taken: ", end_time - start_time)
