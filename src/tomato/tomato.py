@@ -4,38 +4,45 @@ from abc import ABC
 import numpy as np
 import random
 
+from PIL import Image
+
 from src.model.composite_leaf import CompositeLeaf
 from src.model.plant import Plant
+from src.tomato.tomato_branch import TomatoBranch
 
 
 class Tomato(Plant):
     def __init__(self, config):
         self.config = config
         self.bifoliate = CompositeLeaf(config)
+        self.branch_gen = TomatoBranch(config)
+        self.branch_image_size = 256
+        self.branch_range = (6,10)
         self.__setup__()
 
     def __setup__(self):
-        self.patterns = [133, 135, 137]
+        self.divergence_angle = 137.5
         self.BASE_LEAF_SIZE = 50
         self.LEAF_SCALE_FACTOR = 40
 
     def get_leaf_arrangement_coords(self, center, num_leaves=25):
+        num_branch = random.randint(self.branch_range[0], self.branch_range[1])
         # take randon angle
-        divergence_angle = random.choice(self.patterns)
-        scaling_factor = 40
+        divergence_angle = 137.5
+        scaling_factor = 50
         # Convert angle to radians
         angle_rad = np.radians(divergence_angle)
 
         coords = []
         sizes = []
 
-        for i in range(num_leaves):
+        for i in range(num_branch):
             # Calculate angle
             theta = i * angle_rad
 
             # Calculate radius (using concentric circles approach)
             # r = scaling_factor * np.sqrt(i / (2 * np.pi))
-            r = scaling_factor * np.sqrt(i )
+            r = scaling_factor * np.sqrt(i)
 
             # Convert polar coordinates to Cartesian
             x_i = r * np.cos(theta) + center[0]
@@ -52,25 +59,15 @@ class Tomato(Plant):
 
     def get_angle_of_rotation_for_coords(self, center, coords):
         angles = []
-        x2, y2 = center
-        for coord in coords:
-            x1, y1 = coord
-
-            dx = x2 - x1
-            dy = y2 - y1
-
-            if dy == 0:
-                angle = 90 if dx > 0 else -90
-                dy = 0.00000001
-            angle_rad = math.atan(dx / dy)
-            angle_deg = math.degrees(angle_rad)
-
-            # adjusting angle based on quadrant
-            if dy < 0:
-                angle_deg += 180 if dx < 0 else -180
-            angle = angle_deg
+        angle = 0
+        for i,coord in enumerate(coords):
+            angle = (angle + i * self.divergence_angle) % 360
             angles.append(angle)
         return angles
 
     def get_leaves(self, disease_type, angle, scale_factor=1):
-        return self.bifoliate.get_bifoliate(disease_type, angle, scale_factor )
+        # calculate number of bifoliates
+        num_bifoliates = random.randint(5,7)
+        branch = self.branch_gen.get_branch_with_leaves(disease_type, num_bifoliates, scale_factor)
+        branch = branch.resize((self.branch_image_size, self.branch_image_size))
+        return branch

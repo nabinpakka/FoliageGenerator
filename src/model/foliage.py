@@ -51,9 +51,9 @@ class Foliage:
 
         column_gap = 2
         if self.TYPE == "tomato":
-            column_gap = 1.5
+            column_gap = 2
 
-        x_coord = self.BASE_IMAGE_SIZE[0] // 3 - self.SINGLE_IMAGE_SIZE // 2 - self.OFFSET
+        x_coord = self.BASE_IMAGE_SIZE[0] // 3 - self.SINGLE_IMAGE_SIZE // 2 - self.OFFSET - 100
         y_coord_step = self.SINGLE_IMAGE_SIZE - (self.OFFSET * 2)
 
         coords = []
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     trifoliate_patch = Foliage(config)
 
     start_time = time.time()
-    patch = trifoliate_patch.get_patch_of_leaves("frogeye")
+    patch = trifoliate_patch.get_patch_of_leaves("bacterial_blight")
     patch.show()
     end_time = time.time()
     print("Total time taken: ", end_time - start_time)

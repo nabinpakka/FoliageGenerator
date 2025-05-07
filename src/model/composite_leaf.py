@@ -73,12 +73,26 @@ class CompositeLeaf():
         # generate random number for the number of healthy leaves to include in the trifoliate
         num_healthy_leaves = num_leaves if disease == "healthy" else random.randint(0, 2)
 
+        # for single leaf image, there is no healthy leaves
+        if num_leaves ==1 and disease != "healthy":
+            num_healthy_leaves = 0
+
         leaf_image_paths = []
         leaf_image_paths.extend(random.sample(self.image_path_by_disease["healthy"], num_healthy_leaves))
         if disease != "healthy":
             leaf_image_paths.extend(random.sample(self.image_path_by_disease[disease], num_leaves - num_healthy_leaves))
 
         return leaf_image_paths
+
+    def get_single_leaf(self, disease="healthy", angle=0, scale_factor=1) -> Image.Image:
+        leaf_image_path = self._get_leaves_image_paths(disease, 1)
+        scaled_size = self.LEAF_IMAGE_SIZE * scale_factor
+
+        leaf_image = Image.open(leaf_image_path[0]).convert("RGBA")
+        leaf_image = leaf_image.resize(
+            (int(scaled_size), int(scaled_size)),
+            Image.Resampling.LANCZOS)
+        return leaf_image
 
     def get_bifoliate(self, disease="healthy", angle=0, scale_factor=1) -> Image.Image:
         leaf_image_paths = self._get_leaves_image_paths(disease, 2)
@@ -120,7 +134,6 @@ class CompositeLeaf():
         leaf_image = Image.open(leaf_image_paths[0]).convert("RGBA")
         leaf_image1 = Image.open(leaf_image_paths[1]).convert("RGBA")
         leaf_image2 = Image.open(leaf_image_paths[2]).convert("RGBA")
-
 
         background = Image.new("RGBA", (size_of_trifoliate_image, size_of_trifoliate_image), (0, 0, 0, 0))
 

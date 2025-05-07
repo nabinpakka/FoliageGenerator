@@ -1,3 +1,5 @@
+import random
+
 import numpy as np
 
 import math
@@ -10,6 +12,7 @@ class Soybean(Plant):
     def __init__(self, config):
         self.config = config
         self.trifoliate = CompositeLeaf(config)
+        self.branch_range = (4,8)
         pass
 
     def get_leaf_arrangement_coords(self, center, num_leaves=25):

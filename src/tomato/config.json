@@ -4,13 +4,14 @@
   "foliage_size": "(1024, 1500)",
   "single_plant_size": 512,
   "single_leaf_size":70,
-  "num_plants": 12,
+  "num_plants": 16,
   "plant_offset": 100,
   "disease_rate": 10,
   "background_image_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/tomato/cropped_images",
   "input_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/images/tomato",
   "output_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/output_images/tomato",
   "type": "tomato",
-  "leaf_spacing": 50
+  "leaf_spacing": 60,
+  "branch_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/tomato/tomato_branch"
 }
 
