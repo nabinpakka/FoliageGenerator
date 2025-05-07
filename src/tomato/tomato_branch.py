@@ -12,23 +12,11 @@ from src.utilities import Utility
 class TomatoBranch:
     def __init__(self, config):
         self._image_cache = {}
-        self.branch_paths = []
-        self.branch_count = 0
         self.branch_image_size = (200, 600)
         self.leaves = CompositeLeaf(config)
         self.bifoliate_offset = 50
         self.leaf_spacing = config.get("leaf_spacing")
         self.leaf_size = config.get("single_leaf_size")
-        self.__setup(config.get("branch_path"))
-
-    def __setup(self, branch_dir_path):
-        self.__get_branch_paths_and_count(branch_dir_path)
-
-    def __get_branch_paths_and_count(self, branch_dir_path):
-        for image_name in os.listdir(branch_dir_path):
-            if image_name.endswith('.png'):
-                self.branch_paths.append(os.path.join(branch_dir_path, image_name))
-                self.branch_count += 1
 
     def __get_increasing_random_num(self, current, offset):
         return random.randint(current, current + offset)
