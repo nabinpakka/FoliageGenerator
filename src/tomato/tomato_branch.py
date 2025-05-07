@@ -71,8 +71,8 @@ class TomatoBranch:
 
             # adding initial coord
             if not i:
-                branch_coords.append((branch_x_coord, branch_y_coord + self.leaf_size))
-            branch_coords.append((branch_x_coord, branch_y_coord))
+                branch_coords.append((branch_x_coord + 15, branch_y_coord + self.leaf_size))
+            branch_coords.append((branch_x_coord + 15, branch_y_coord))
 
             bifoliate = bifoliate.resize((scaled_size, scaled_size))
             background.paste(bifoliate, (x_coord, y_coord), bifoliate)
@@ -183,6 +183,11 @@ class TomatoBranch:
         for i in range(len(points) - 1):
             draw.line([points[i], points[i + 1]], fill=color, width=width)
 
+        #draw lines for petiole
+        petiole_x, petiole_y = start_point
+        draw.line([start_point, (petiole_x +20, petiole_y - 10)], fill=color, width=width //2 + 3)
+        draw.line([start_point, (petiole_x - 20, petiole_y -10 )],  fill=color, width=width//2  + 3)
+
     def draw_branches(self, coordinates, img,
                       branch_color=(85, 107, 47), min_width=2, max_width=10, seed=None):
         """
@@ -219,7 +224,6 @@ class TomatoBranch:
                 color=branch_color,
                 texture=(branch_width > 2)
             )
-
         return img
 
 

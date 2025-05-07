@@ -47,7 +47,7 @@ def crop_image_with_sliding_window(input_image_path, crop_width=750, crop_height
 # Example usage
 if __name__ == "__main__":
     # Replace with your image path
-    input_image_path = "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/background3.jpg"
+    input_image_path = "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/tomato/back1.png"
 
     # Crop the image
     crop_count = 0
@@ -59,19 +59,19 @@ if __name__ == "__main__":
         slide_y_step=300,
         crop_count=crop_count
     )
-    # crop_count = crop_image_with_sliding_window(
-    #     "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/tomato/top-view-soil.jpg",
-    #     crop_width=1500,
-    #     crop_height=1500,
-    #     slide_x_step=300,
-    #     slide_y_step=300,
-    #     crop_count=crop_count
-    # )
-    # crop_count = crop_image_with_sliding_window(
-    #     "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/tomato/top-view-soil1.jpg",
-    #     crop_width=1500,
-    #     crop_height=1500,
-    #     slide_x_step=300,
-    #     slide_y_step=300,
-    #     crop_count=crop_count
-    # )
+    crop_count = crop_image_with_sliding_window(
+        "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/tomato/back2.png",
+        crop_width=1500,
+        crop_height=1500,
+        slide_x_step=300,
+        slide_y_step=300,
+        crop_count=crop_count
+    )
+    crop_count = crop_image_with_sliding_window(
+        "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/tomato/back3.png",
+        crop_width=1500,
+        crop_height=1500,
+        slide_x_step=300,
+        slide_y_step=300,
+        crop_count=crop_count
+    )

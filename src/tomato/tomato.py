@@ -61,7 +61,7 @@ class Tomato(Plant):
         angles = []
         angle = 0
         for i,coord in enumerate(coords):
-            angle = (angle + i * self.divergence_angle) % 360
+            angle = (i * self.divergence_angle) % 360
             angles.append(angle)
         return angles
 
