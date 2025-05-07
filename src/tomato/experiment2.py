@@ -26,9 +26,9 @@ def generate_phyllotaxis(num_leaves=13, divergence_angle=137.5):
         theta = i * angle_rad
 
         # Calculate radius (using concentric circles approach)
-        r = np.sqrt(i / (2 * np.pi))
+        r = np.sqrt(i)
         # Round to nearest 0.5 to create distinct concentric rings
-        r_rounded = np.round(r * 2) / 2
+
 
         # Convert polar coordinates to Cartesian
         x_i = r * np.cos(theta)
@@ -36,7 +36,7 @@ def generate_phyllotaxis(num_leaves=13, divergence_angle=137.5):
 
         x.append(x_i)
         y.append(y_i)
-        radii.append(r_rounded)
+        radii.append(r)
 
     print(x)
     print(y)
