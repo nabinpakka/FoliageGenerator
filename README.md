@@ -41,9 +41,9 @@ leaf images. A sample of the configuration file is as shown below:
   "single_plant_size": 512,
   "num_plants": 12,
   "disease_rate": 5,
-  "background_image_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/cropped_images",
-  "input_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/images/soybean",
-  "output_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/output_images/soybean",
+  "background_image_path": "path_to_background_images",
+  "input_path": "path_to_input_dir",
+  "output_path": "path_to_output_dir",
   "type": "soybean"
 }
 ```
@@ -53,4 +53,10 @@ leaf images. A sample of the configuration file is as shown below:
 Create python environment with `python>=3.9.6` with the necessary packages installed as showin in `requirement.txt` file.
 
 Run the `main.py` with path of config file as argument 
-`python main.py -c "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/config.json"`
+`python main.py -c "path_to_config_file"`
+
+### Experimentation with classifiers
+The experiments conducted for this paper can be reproduced using classifiers defined in the paper. 
+The directory `classifier` consists of all the code used to obtain results presented in the paper. The results
+can be reproduced by running the models in the code. `main.py` is the entry point to the experiments and the models can be changes by commenting and 
+uncommenting some parts of the file.
