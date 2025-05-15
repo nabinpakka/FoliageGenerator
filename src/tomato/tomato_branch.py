@@ -220,7 +220,7 @@ if __name__ == '__main__':
 
     utility = Utility()
     config = utility.json_parser(
-        "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/tomato/config.json")
+        "path_to_config_file")
     tomato_branch = TomatoBranch(config)
 
     for i in range(3, 6):

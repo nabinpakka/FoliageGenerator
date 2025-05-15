@@ -126,17 +126,13 @@ class SinglePlant:
             else:
                 background.paste(leaves, coord, leaves)
 
-        #
-        # if self.plant_type == "tomato":
-        #     return background.resize((768, 768))
-        background.save("/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/single_plant.png")
         return background
 
 
 if __name__ == '__main__':
     utility = Utility()
     config = utility.json_parser(
-        "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/soybean/config.json")
+        "path_to_config")
     single_plant = SinglePlant(config)
 
     start_time = time.time()

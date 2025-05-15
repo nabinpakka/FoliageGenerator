@@ -161,6 +161,6 @@ def process_multiple_directories(base_input_path, base_output_path, num_images=4
 
 # Example usage
 if __name__ == "__main__":
-    base_input_path = "/home/nabin/Documents/DiseaseClassification/src/natural_patch"
-    base_output_path = "/home/nabin/Documents/DiseaseClassification/src/natural_foliage_1024"
+    base_input_path = "path_to_input_dir"
+    base_output_path = "path_to_ouput_dir"
     process_multiple_directories(base_input_path, base_output_path, 280)
