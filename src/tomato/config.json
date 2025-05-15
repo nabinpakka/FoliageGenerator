@@ -7,9 +7,9 @@
   "num_plants": 16,
   "plant_offset": 100,
   "disease_rate": 10,
-  "background_image_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/background_images/tomato/cropped_images",
-  "input_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/images/tomato",
-  "output_path": "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/output_images/tomato",
+  "background_image_path": "path_to_background_image",
+  "input_path": "path_to_input_dir",
+  "output_path": "path_to_output_dir",
   "type": "tomato",
   "leaf_spacing": 60
 }

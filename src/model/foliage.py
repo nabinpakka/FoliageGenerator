@@ -80,7 +80,7 @@ class Foliage:
 if __name__ == '__main__':
 
     utility = Utility()
-    config =  utility.json_parser("/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/tomato/config.json")
+    config =  utility.json_parser("path_to_config_file")
     trifoliate_patch = Foliage(config)
 
     start_time = time.time()

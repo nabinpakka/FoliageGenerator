@@ -72,8 +72,8 @@ def resize_images_in_directory(input_dir, output_dir, size=(512, 512)):
             print(f"Skipping file {filename}: {e}")
 
 if __name__ == '__main__':
-    base_dir = "/home/nabin/Documents/DiseaseClassification/src/output_images/new_image8090"
-    output_dir = "/home/nabin/Documents/DiseaseClassification/src/output_images/new_image8090_1024"
+    base_dir = "path_to_input_dir"
+    output_dir = "path_to_output_dir"
 
 
     # with ThreadPoolExecutor(max_workers=6) as executor:

@@ -32,6 +32,6 @@ def convert_images_to_pdfs(input_dir, output_dir, extensions=('jpg', 'jpeg', 'pn
 
 
 if __name__ == '__main__':
-    input_dir = "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/pdf_images"
-    output_dir ="/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/pdf_images"
+    input_dir = "path_to_input_dir"
+    output_dir ="path_to_output_dir"
     convert_images_to_pdfs(input_dir, output_dir)

@@ -37,9 +37,8 @@ def remove_background(input_path, output_path):
 
 
 if __name__ == '__main__':
-    base_image_path = "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/images/tomato"
-    base_output_path = "/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/output_images/tomato"
+    base_image_path = "path_to_input_dir"
+    base_output_path = "path_to_output_dir"
 
-    base_output_path.replace()
 
     remove_background(base_image_path, base_output_path)

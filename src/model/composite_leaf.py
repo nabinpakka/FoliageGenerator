@@ -168,6 +168,4 @@ class CompositeLeaf():
         background.paste(rotated_image2, (x_offset2, y_offset2), rotated_image2)
         background = background.rotate(angle)
 
-        background.save("/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/trifoliate.png")
-
         return background
