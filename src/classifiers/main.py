@@ -11,6 +11,9 @@ from paddle.vision.models.vgg import make_layers
 
 from conv_next import ConvNeXt
 from swin_transformer import SwinTransformer
+from conformer import Conformer
+from cmt import CMT
+
 from dataset_station import StationType
 
 paddle.set_device('gpu:0')
