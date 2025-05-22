@@ -53,7 +53,7 @@ class Foliage:
         if self.TYPE == "tomato":
             column_gap = 2
 
-        x_coord = self.BASE_IMAGE_SIZE[0] // 3 - self.SINGLE_IMAGE_SIZE // 2 - self.OFFSET - 100
+        x_coord = self.BASE_IMAGE_SIZE[0] // 3 - self.SINGLE_IMAGE_SIZE // 2 - self.OFFSET
         y_coord_step = self.SINGLE_IMAGE_SIZE - (self.OFFSET * 2)
 
         coords = []
@@ -63,16 +63,65 @@ class Foliage:
             coords.append((x_coord + 2 * (self.SINGLE_IMAGE_SIZE - int(self.OFFSET * column_gap)), y - self.OFFSET))
         return coords
 
+    def get_patch_indices(self, cluster_id, rows=4, cols=3, patch_size=2):
+        """
+        Returns the flat indices of a patch in a 1D array representing a 2D grid.
+
+        Parameters:
+            cluster_id (int): Number of the patch (starting from 1)
+            rows (int): Number of rows in the grid
+            cols (int): Number of columns in the grid
+            patch_size (int): Size of the square patch (default is 2 for 2x2)
+
+        Returns:
+            List[int]: Flat indices of the patch elements
+        """
+        max_row_start = rows - patch_size
+        max_col_start = cols - patch_size
+        total_patches = (max_row_start + 1) * (max_col_start + 1)
+
+        if cluster_id < 1 or cluster_id > total_patches:
+            raise ValueError(f"Patch number must be between 1 and {total_patches}")
+
+        # Map patch_number to its (row, col) starting position
+
+        row_id = (cluster_id - 1) // (max_col_start + 1)
+        col_id = (cluster_id - 1) % (max_col_start + 1)
+
+        indices = []
+        for dy in range(patch_size):
+            for dx in range(patch_size):
+                r = row_id + dy
+                c = col_id + dx
+                flat_index = r * cols + c
+                indices.append(flat_index)
+
+        return indices
+
+    def get_cluster_coords_index(self):
+        cluster_id = random.randint(1, 6)
+
+        # dividing the foliage image to 6 regions to with 4 single plants
+        # for i in range(6):
+        #     coord_index = [(cluster_id * 3 + i) for i in range(0,6)]
+
+        return self.get_patch_indices(cluster_id)
+
+        #get rand
     def get_patch_of_leaves(self, disease="healthy") -> Image:
 
         # angles = self.utility.get_random_angle(self.PLANT_PER_PATCH)
         coords = self._get_coordinates_for_single_plant()
+        cluster_coord_index = self.get_cluster_coords_index()
 
         background_image = self._load_and_prepare_image(random.choice(self.background_paths))
         background_image = background_image.resize(self.BASE_IMAGE_SIZE)
 
-        for coord in coords:
-            single_plant = self.single_plant.get_single_plant(disease)
+        for idx, coord in enumerate(coords):
+            if idx in cluster_coord_index:
+                single_plant = self.single_plant.get_single_plant(disease)
+            else:
+                single_plant = self.single_plant.get_single_plant("healthy")
             # single_plant = single_plant.rotate(angle)
             background_image.paste(single_plant, coord, single_plant)
         return background_image
@@ -80,11 +129,11 @@ class Foliage:
 if __name__ == '__main__':
 
     utility = Utility()
-    config =  utility.json_parser("path_to_config_file")
+    config =  utility.json_parser("/Users/roshan/Documents/ResearchAssistant/DiseaseClassification/FoliageGenerator/src/soybean/config.json")
     trifoliate_patch = Foliage(config)
 
     start_time = time.time()
-    patch = trifoliate_patch.get_patch_of_leaves("bacterial_spot")
+    patch = trifoliate_patch.get_patch_of_leaves("bacterial_blight")
     patch.show()
     end_time = time.time()
     print("Total time taken: ", end_time - start_time)

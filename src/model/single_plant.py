@@ -95,7 +95,7 @@ class SinglePlant:
         angles = self.plant.get_angle_of_rotation_for_coords(center, coords)
 
         # percentage of healthy leaves in a single plant
-        rand_healthy_leaves_percent = 100 - self.DISEASE_PERCENT
+        rand_healthy_leaves_percent = 100 - self.DISEASE_PERCENT * 2
         healthy_leaves_count = math.ceil(num_leaves * rand_healthy_leaves_percent / 100)
 
         # leaf to cover the gap in the center of the single plant
