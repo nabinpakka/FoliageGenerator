@@ -27,7 +27,7 @@ Here are some examples of single leaf images for soybean.
 
 #### Background images 
 Here the background images are to emulate the field that the plants grow on. Keeping only plain 
-background will not create a more natural foliage image. 
+background will not create a more natural foliage image. The background image are obtained from [Freepic](https://www.freepik.com/)
 ![Alt text](src/sample_single_leaf/img.png)
 
 #### Configuration
